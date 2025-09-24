@@ -13,15 +13,19 @@ function Login() {
 
   return (
     <div className="login">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
+      <div className="login-container">
+        <h1>Welcome Back</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit">Sign In</button>
+        </form>
+      </div>
     </div>
   );
 }

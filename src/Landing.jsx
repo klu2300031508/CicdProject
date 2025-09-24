@@ -7,7 +7,13 @@ function Landing() {
     <div className="landing">
       <h1>Welcome to News Aggregator</h1>
       <p>Stay updated with the latest news across categories.</p>
-      <Link to="/home" className="btn">Get Started</Link>
+      <div className="landing-cta">
+        <Link to="/home" className="btn">Get Started</Link>
+        <div className="cta-auth">
+          <Link to="/login" className="btn btn-outline">Login</Link>
+          <Link to="/signup" className="btn btn-secondary">Sign up</Link>
+        </div>
+      </div>
     </div>
   );
 }

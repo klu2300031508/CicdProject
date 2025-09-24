@@ -11,15 +11,19 @@ function Signup() {
 
   return (
     <div className="signup">
-      <h1>Signup</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button type="submit">Signup</button>
-      </form>
+      <div className="signup-container">
+        <h1>Join Us Today</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit">Create Account</button>
+        </form>
+      </div>
     </div>
   );
 }

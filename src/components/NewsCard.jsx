@@ -7,11 +7,13 @@ function NewsCard({ article }) {
       {article.urlToImage && (
         <img src={article.urlToImage} alt={article.title} />
       )}
-      <h2>{article.title}</h2>
-      <p>{article.description}</p>
-      <a href={article.url} target="_blank" rel="noopener noreferrer">
-        Read More
-      </a>
+      <div className="news-card-content">
+        <h2>{article.title}</h2>
+        <p>{article.description}</p>
+        <a href={article.url} target="_blank" rel="noopener noreferrer">
+          Read More
+        </a>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,12 @@ function Favorites() {
   return (
     <div className="favorites">
       <h1>Your Favorite Articles</h1>
-      <p>No favorites yet.</p>
+      <div className="favorites-empty">
+        <div className="favorites-empty-icon">📰</div>
+        <p className="favorites-empty-text">
+          You haven't saved any articles yet. Start exploring news and add your favorites!
+        </p>
+      </div>
     </div>
   );
 }

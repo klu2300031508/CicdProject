@@ -20,7 +20,8 @@ function DarkModeToggle() {
           checked={dark}
           onChange={() => setDark(!dark)}
         />
-        Dark Mode
+        <div className="toggle-switch"></div>
+        <span>{dark ? 'Light' : 'Dark'} Mode</span>
       </label>
     </div>
   );

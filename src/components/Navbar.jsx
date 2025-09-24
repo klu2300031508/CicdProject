@@ -12,7 +12,8 @@ function Navbar() {
         <li><Link to="/category/technology">Technology</Link></li>
         <li><Link to="/category/sports">Sports</Link></li>
         <li><Link to="/favorites">Favorites</Link></li>
-        <li><Link to="/login">Login</Link></li>
+        <li><Link className="btn-cta btn-outline" to="/login">Login</Link></li>
+        <li><Link className="btn-cta btn-primary" to="/signup">Sign up</Link></li>
       </ul>
     </nav>
   );

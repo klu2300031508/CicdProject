@@ -2,26 +2,102 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #0077cc;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
-  padding: 10px 20px;
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow-lg);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .navbar .logo {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  background: linear-gradient(45deg, #ffffff, #e0f2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 15px;
+  gap: 1rem; /* Reduced gap for tighter spacing */
+  align-items: center;
 }
 
 .nav-links li {
   cursor: pointer;
+  position: relative;
 }
 
-.nav-links li:hover {
-  text-decoration: underline;
+.nav-links li a {
+  color: white;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem; /* Reduced padding for smaller tabs */
+  font-size: 0.9rem; /* Reduced font size */
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Removed glass effect by deleting ::before and hover background */
+.nav-links li a:hover {
+  transform: translateY(-1px);
+}
+
+.nav-links li a:active {
+  transform: translateY(0);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .nav-links {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .nav-links li a {
+    padding: 0.2rem 0.6rem; /* Further reduced for mobile */
+    font-size: 0.8rem;
+  }
+}
+
+/* CTA buttons */
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-primary {
+  background: #ffffff;
+  color: var(--primary);
+}
+
+.btn-primary:hover {
+  background: #e2e8f0;
 }
