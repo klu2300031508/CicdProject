@@ -1,0 +1,13 @@
+.signup {
+  text-align: center;
+  padding: 20px;
+}
+
+.signup input {
+  margin: 10px;
+  padding: 8px;
+}
+
+.signup button {
+  padding: 8px 15px;
+}
