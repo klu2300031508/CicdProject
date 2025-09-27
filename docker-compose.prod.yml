@@ -1,0 +1,28 @@
+services:
+  news-aggregator:
+    build:
+      context: .
+      dockerfile: Dockerfile.Frontend
+    container_name: news-aggregator-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.news-aggregator.rule=Host(`your-domain.com`)"
+      - "traefik.http.services.news-aggregator.loadbalancer.server.port=80"
+    networks:
+      - news-aggregator-network
+
+networks:
+  news-aggregator-network:
+    driver: bridge
