@@ -7,12 +7,10 @@ function Landing() {
     <div className="landing">
       <h1>Welcome to News Aggregator</h1>
       <p>Stay updated with the latest news across categories.</p>
-      <div className="landing-cta">
+      <div className="landing-actions" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
         <Link to="/home" className="btn">Get Started</Link>
-        <div className="cta-auth">
-          <Link to="/login" className="btn btn-outline">Login</Link>
-          <Link to="/signup" className="btn btn-secondary">Sign up</Link>
-        </div>
+        <Link to="/login" className="btn" style={{ background: "#1e88e5" }}>Login</Link>
+        <Link to="/signup" className="btn" style={{ background: "#43a047" }}>Signup</Link>
       </div>
     </div>
   );

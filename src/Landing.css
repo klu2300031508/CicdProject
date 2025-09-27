@@ -98,33 +98,6 @@
   transform: translateX(4px);
 }
 
-.landing-cta {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.cta-auth {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.btn.btn-outline {
-  background: transparent;
-  color: var(--primary);
-  border: 2px solid var(--primary);
-}
-
-.btn.btn-outline:hover {
-  background: rgba(59, 130, 246, 0.08);
-  color: var(--primary);
-}
-
-.btn.btn-secondary {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-}
-
 /* Animations */
 @keyframes fadeInUp {
   from {
@@ -165,9 +138,6 @@
   .landing .btn {
     padding: 0.875rem 2rem;
     font-size: 1rem;
-  }
-  .cta-auth {
-    flex-direction: column;
   }
 }
 

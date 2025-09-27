@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import DarkModeToggle from "./components/DarkModeToggle";
 import Landing from "./Landing";
@@ -12,7 +13,7 @@ import "./App.css";
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Navbar />
       <DarkModeToggle />
       <main>
@@ -25,7 +26,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </main>
-    </>
+    </AuthProvider>
   );
 }
 
