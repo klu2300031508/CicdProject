@@ -101,3 +101,57 @@
 .btn-primary:hover {
   background: #e2e8f0;
 }
+
+/* User email styling */
+.nav-profile-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.profile-avatar-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.profile-names {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  font-size: 0.85rem;
+}
+
+.profile-names strong {
+  font-size: 0.85rem;
+}
+
+.profile-names small {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.nav-profile-section .btn-cta {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-profile-section .btn-cta:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

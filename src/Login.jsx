@@ -1,30 +1,33 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import "./Login.css";
 
-function Login() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+export default function Login() {
+  const [form, setForm] = useState({ username: "", password: "" });
   const [captchaText, setCaptchaText] = useState("");
   const [userInput, setUserInput] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const canvasRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+  const from = location.state?.from?.pathname || "/home";
 
-  const drawCaptcha = (text) => {
+  // Draw Captcha
+  const drawCaptcha = useCallback((text) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     const width = canvas.width;
     const height = canvas.height;
 
-    // background
     ctx.fillStyle = `hsl(${Math.random() * 360}, 30%, 92%)`;
     ctx.fillRect(0, 0, width, height);
 
-    // random lines for noise
+    // Noise
     for (let i = 0; i < 6; i++) {
       ctx.strokeStyle = `hsla(${Math.random() * 360}, 70%, 40%, 0.6)`;
       ctx.lineWidth = 1 + Math.random() * 2;
@@ -34,73 +37,82 @@ function Login() {
       ctx.stroke();
     }
 
-    // draw characters with jitter
+    // Characters
     const charCount = text.length;
     const baseX = 20;
     const stepX = (width - 40) / charCount;
+
     for (let i = 0; i < charCount; i++) {
-      const char = text[i];
-      const fontSize = 24 + Math.floor(Math.random() * 8);
+      const c = text[i];
+      const size = 24 + Math.random() * 8;
       ctx.save();
-      ctx.font = `${fontSize}px sans-serif`;
+      ctx.font = `${size}px sans-serif`;
       ctx.fillStyle = `hsl(${Math.random() * 360}, 80%, 35%)`;
-      const angle = (Math.random() - 0.5) * 0.6; // ~ -17° to 17°
+      const angle = (Math.random() - 0.5) * 0.6;
       const x = baseX + i * stepX + (Math.random() - 0.5) * 6;
       const y = height / 2 + (Math.random() - 0.5) * 12;
       ctx.translate(x, y);
       ctx.rotate(angle);
-      ctx.fillText(char, 0, 0);
+      ctx.fillText(c, 0, 0);
       ctx.restore();
     }
 
-    // sprinkle dots
+    // Dots
     for (let i = 0; i < 80; i++) {
       ctx.fillStyle = `hsla(${Math.random() * 360}, 70%, 30%, 0.5)`;
       ctx.beginPath();
       ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 1.5, 0, Math.PI * 2);
       ctx.fill();
     }
-  };
+  }, []);
 
-  // Generate random captcha
-  const generateCaptcha = () => {
+  // Generate captcha
+  const generateCaptcha = useCallback(() => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
+    let r = "";
     for (let i = 0; i < 6; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
+      r += chars[Math.floor(Math.random() * chars.length)];
     }
-    setCaptchaText(result);
+    setCaptchaText(r);
     setUserInput("");
     setError("");
-    // draw immediately with the new text value
-    setTimeout(() => drawCaptcha(result), 0);
-  };
+    setTimeout(() => drawCaptcha(r), 0);
+  }, [drawCaptcha]);
 
   useEffect(() => {
     generateCaptcha();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [generateCaptcha]);
 
-  const handleSubmit = async (e) => {
+  // Login Handler
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
     // Validate captcha
     if (userInput.toLowerCase() !== captchaText.toLowerCase()) {
-      setError("Invalid captcha. Please try again.");
+      setError("Invalid Captcha");
       generateCaptcha();
       setIsLoading(false);
       return;
     }
 
-    // Simulate login process
+    // Call backend API
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      login(email);
-      navigate("/home");
+      const res = await axios.post("http://localhost:8081/auth/login", form);
+      const payload = res.data || {};
+      const token = typeof payload === "string" ? payload : payload.token;
+      const email = payload.email || null;
+
+      login({ username: form.username, email, token });
+      navigate(from, { replace: true });
     } catch (err) {
-      setError("Login failed. Please try again.");
+      const message =
+        err.response?.data?.message ||
+        err.response?.data ||
+        "Invalid username or password";
+      setError(message);
+      generateCaptcha();
     } finally {
       setIsLoading(false);
     }
@@ -110,52 +122,57 @@ function Login() {
     <div className="login">
       <div className="login-container">
         <h1>Welcome Back</h1>
-        <form onSubmit={handleSubmit}>
+
+        <form onSubmit={handleLogin}>
           <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Username"
+            value={form.username}
+            onChange={(e) => setForm({ ...form, username: e.target.value })}
             required
           />
-          
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+          />
+
           <div className="captcha-container">
-            <label htmlFor="captcha">Security Verification</label>
-            <div className="captcha-wrapper">
-              <canvas
-                ref={canvasRef}
-                width={240}
-                height={70}
-                style={{ borderRadius: 8, background: "#fff", boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)" }}
-              />
-              <button 
-                type="button" 
-                className="captcha-refresh"
-                onClick={generateCaptcha}
-                title="Refresh captcha"
-              >
-                🔄
-              </button>
-            </div>
-            <input
-              id="captcha"
-              type="text"
-              placeholder="Enter the text above"
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              required
-            />
+            <label htmlFor="captcha-input">Security Check</label>
+          <div className="captcha-wrapper">
+            <canvas ref={canvasRef} width={240} height={70} />
+            <button type="button" className="captcha-refresh" onClick={generateCaptcha}>
+              🔄
+            </button>
+          </div>
+
+          <input
+              id="captcha-input"
+            type="text"
+            placeholder="Enter Captcha"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            required
+          />
           </div>
 
           {error && <div className="error-message">{error}</div>}
 
           <button type="submit" disabled={isLoading}>
-            {isLoading ? "Signing In..." : "Sign In"}
+            {isLoading ? "Processing..." : "Login"}
           </button>
         </form>
+
+        <p style={{ marginTop: "1.5rem", textAlign: "center" }}>
+          New user?{" "}
+          <Link to="/signup" style={{ textDecoration: "underline" }}>
+            Register here
+          </Link>
+        </p>
       </div>
     </div>
   );
 }
-
-export default Login;
